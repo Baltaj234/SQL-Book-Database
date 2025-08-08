@@ -39,5 +39,25 @@
     FOREIGN key (author_id) references authors(author_id)
  );
 
- 
+-- creating the customer table
+create table customers(
+    customer_id int primary key identity(1,1),
+    name varchar(100) not null, 
+    email varchar(100) unique,
+    join_date date default getdate()
+);
+
+-- Creating the transactions table
+create table transactions(
+    transaction_id int primary key identity(1,1),
+    customer_id int,
+    book_id int,
+    transaction_date date default getdate(),
+    quantity int check (quantity > 0),
+    FOREIGN key (customer_id) references customers(customer_id),
+    FOREIGN key (book_id) references books(book_id)
+);
+
+
+
 
