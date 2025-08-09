@@ -100,5 +100,21 @@ join books b on t.book_id = b.book_id
 group by b.title;
 
 
+-- inserting sample data into the database
+INSERT INTO genres (genre_name) VALUES ('Fantasy'), ('Science Fiction'), ('Mystery');
+INSERT INTO authors (name, nationality, birth_date) VALUES 
+('J.K. Rowling', 'British', '1965-07-31'),
+('Isaac Asimov', 'American', '1920-01-02');
+
+INSERT INTO books (title, genre_id, publication_year, price, stock) VALUES
+('Harry Potter', 1, 1997, 19.99, 10),
+('Foundation', 2, 1951, 14.99, 8);
+
+INSERT INTO book_authors (book_id, author_id) VALUES
+(1, 1),
+(2, 2);
+
+
+
 
 
