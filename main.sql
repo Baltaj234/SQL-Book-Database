@@ -58,6 +58,47 @@ create table transactions(
     FOREIGN key (book_id) references books(book_id)
 );
 
+-- Creating a view for best_selling_books
+create view best_selling_books as 
+select b.title, sum(t.quantity) as total_sold
+from transactions t 
+join books b on t.book_id = b.book_id
+group by b.title
+order by total_sold desc;
+
+-- Creating a stored procedure to get books by genre
+create procedure getBooksByGenre @genreName varchar(50)
+as
+begin
+select b.title, a.name, as author
+from books b
+join genres g on b.genre_id = g.genre_id
+join book_authors ba on b.book_id = ba.book_id
+join authors a on ba.author_id = a.author_id
+where g.genre_name = @genreName;
+end;
+
+-- Creating a trigger where a books' stock can go down when it is purchased
+create trigger reduce_stock 
+on transactions
+after insert
+as 
+begin
+update books
+set stock = stock - inserted.quantity
+from books
+join inserted on books.book_id - inserted.book_id;
+end;
+
+-- Creating a window function 
+select
+b.title, 
+sum(t.quantity) as total_sold,
+rank() over (order by sum(t,quantity)desc) as sales_rank
+from transactions t
+join books b on t.book_id = b.book_id
+group by b.title;
+
 
 
 
