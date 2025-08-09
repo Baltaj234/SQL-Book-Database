@@ -114,6 +114,31 @@ INSERT INTO book_authors (book_id, author_id) VALUES
 (1, 1),
 (2, 2);
 
+-- running queries on our data
+
+-- Finding all books with their authors and genres
+select b.title, a.name as author, g.genre_name
+from books b
+join book_authors ba on b.book_id = ba.book_id
+join authors a on ba.author_id = a.author_id
+join genres g on b.genre_id = g.genre_id;
+
+-- finding the top 5 selling books
+select top 5 b.title, sum(t.quantity) as total_sold
+from transactions t
+join books b on t.book_id = b.book_id
+group by b.title
+order by total_sold desc;
+
+-- finding the customers who bought more than 3 books in a month
+SELECT c.name, COUNT(t.transaction_id) AS total_purchases
+FROM transactions t
+JOIN customers c ON t.customer_id = c.customer_id
+WHERE MONTH(t.transaction_date) = 8
+GROUP BY c.name
+HAVING COUNT(t.transaction_id) > 3;
+
+
 
 
 
